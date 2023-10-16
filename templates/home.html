@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.js" integrity="sha512-p8OrcnawEEpEiY7S96nMeaShY5AMcdRFYgnaR0ZmOgMSgL9pLNE4x5+MB0FTol7GeJGzEd9m4MAmmD8urOscvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <style>
+        .grid{
+            border: 5px solid black;
+            margin: 15px;
+            text-align: center;
+        }
+        .robpos{
+            position: relative;
+            top: -30px;
+            visibility: hidden;
+        }
+        .boundary{
+            padding: 30px;
+        }
+        .grid{
+            background-color: white;
+        }
+        .robdata{
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            position: relative;
+            top:-30px;
+
+        }
+        .Robdisplay{
+            color: white;
+            display: inline;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Robots Current Status</h1>
+
+    <div class="row" style="margin-top: 20px;">
+
+        <div class="col-8"><h1>1. Blue colour represents the path of Robots</h1>
+            <h1>2. ** on a robot represents there is an obstacle</h1>
+            <br>
+            <div style="background-color: blue; border: 2px solid black; display:inline-block" class="boundary">
+            {% for i in range(rows) %}
+                {% for j in range(cols) %}
+                    {% if i == rows-1%}
+                        {%if j < cols-1 %}
+                        <div class="robdata" id="{{i*cols + j+1}}pos">
+                        
+                        </div>
+                        <div style="height: 60px; width:60px; display:inline-block; visibility:hidden" class="grid">Blocks</div>
+                        {%else%}
+                        <div class="robdata" id="{{i*cols + j+1}}pos"></div>
+                        {%endif%}
+                    {%else%}
+                        {%if j < cols-1 %}
+                            <div class="robdata" id="{{i*cols + j+1}}pos">
+                        </div>
+                            <div style="height: 60px; width:60px; display:inline-block" class="grid">Blocks</div>
+                        {%else%}
+                            <div class="robdata" id="{{i*cols + j+1}}pos"></div>
+                        {%endif%}
+
+                    {% endif %}
+                {% endfor %}
+                <br>
+            {% endfor %}
+        </div>
+        </div>
+        
+        <div class="col-4">
+            <div class="row" style="font-size: 30px;"><h1>Here comes the Robot Number, Signal and Charge in order</h1>
+                {% for i in range(num) %}
+                    <div id="{{i+1}}Robot">Robot{{i+1}}
+                        <span id="{{i+1}}RobotS"></span>
+                        <span id="{{i+1}}RobotC"></span>
+                    </div>
+
+                {% endfor %}
+            </div>
+            <div class="row" style="font-size: 30px;"><h1>Here comes Picks list</h1>
+                <ul id="tasks">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
